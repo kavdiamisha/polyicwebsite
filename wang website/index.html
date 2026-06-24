@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PolyIC — Polymer Research</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    :root { --bg:#f4f5f7; --bg-card:#fff; --text:#1a1f2e; --muted:#6b7280; --accent:#3a6ea5; --accent-dark:#2d5a8a; --accent-light:#dbe8f5; --teal:#2a8a8a; --border:#e2e6ec; --serif:'Cormorant Garamond',Georgia,serif; --sans:'DM Sans',sans-serif; }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html{scroll-behavior:smooth;}
+    body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:16px;line-height:1.7;}
+    /* NAV */
+    nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(244,245,247,0.97);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 6vw;height:68px;}
+    .nav-brand{display:flex;align-items:center;gap:0.6rem;text-decoration:none;font-family:var(--serif);font-size:1.85rem;font-weight:600;color:var(--accent);letter-spacing:0.04em;}
+    .nav-links{display:flex;gap:0.15rem;list-style:none;align-items:center;}
+    .nav-links>li{position:relative;}
+    .nav-links>li>a.nav-plain{display:block;padding:0.5rem 1rem;font-size:0.83rem;font-weight:500;color:var(--muted);text-decoration:none;letter-spacing:0.06em;text-transform:uppercase;border-radius:4px;transition:color 0.2s,background 0.2s;}
+    .nav-links>li>a.nav-plain:hover,.nav-links>li>a.nav-plain.active{color:var(--accent);background:var(--accent-light);}
+    .nav-dd-btn{display:flex;align-items:center;gap:0.4rem;padding:0.5rem 1rem;font-size:0.83rem;font-weight:500;color:var(--muted);letter-spacing:0.06em;text-transform:uppercase;border-radius:4px;cursor:pointer;user-select:none;background:none;border:none;transition:color 0.2s,background 0.2s;white-space:nowrap;}
+    .nav-dd-btn:hover,.nav-links>li.open .nav-dd-btn,.nav-links>li.active-section .nav-dd-btn{color:var(--accent);background:var(--accent-light);}
+    .nav-dd-btn svg{width:12px;height:12px;flex-shrink:0;transition:transform 0.22s;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;}
+    .nav-links>li.open .nav-dd-btn svg{transform:rotate(180deg);}
+    .dd-menu{display:none;position:absolute;top:calc(100% + 6px);left:0;min-width:210px;background:var(--bg-card);border:1px solid var(--border);border-radius:10px;box-shadow:0 12px 32px rgba(0,0,0,0.13);overflow:hidden;z-index:200;}
+    .nav-links>li.open .dd-menu{display:block;}
+    .dd-menu a{display:flex;align-items:center;padding:0.8rem 1.3rem;font-size:0.86rem;font-weight:500;color:var(--text);text-decoration:none;transition:background 0.15s,color 0.15s;border-left:3px solid transparent;}
+    .dd-menu a:hover{background:var(--accent-light);color:var(--accent);border-left-color:var(--accent);}
+    .dd-menu a:not(:last-child){border-bottom:1px solid var(--border);}
+    @media(max-width:768px){nav{padding:0 4vw;height:60px;}.nav-links{gap:0;}.nav-dd-btn,.nav-links>li>a.nav-plain{padding:0.45rem 0.7rem;font-size:0.78rem;}}
+    /* HERO */
+    .hero{background:linear-gradient(140deg,#f0f5fb 0%,#eaf3f3 50%,#f4f5f7 100%);padding:72px 6vw 80px;position:relative;overflow:hidden;min-height:calc(100vh - 68px);display:flex;align-items:center;}
+    .hero::before{content:'';position:absolute;top:-100px;right:-100px;width:500px;height:500px;background:radial-gradient(circle,rgba(58,110,165,0.09) 0%,transparent 70%);pointer-events:none;}
+    .hero::after{content:'';position:absolute;bottom:-60px;left:10%;width:350px;height:350px;background:radial-gradient(circle,rgba(42,138,138,0.08) 0%,transparent 70%);pointer-events:none;}
+    .hero-inner{max-width:960px;margin:0 auto;display:grid;grid-template-columns:1.1fr 0.9fr;gap:5rem;align-items:center;width:100%;}
+    .hero-left{position:relative;z-index:1;}
+    .hero-badge{display:inline-block;background:var(--teal);color:#fff;font-size:0.76rem;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;padding:0.4rem 1rem;border-radius:6px;margin-bottom:1.5rem;}
+    .hero-title{font-family:var(--sans);font-weight:700;font-size:clamp(1.9rem,4vw,3rem);line-height:1.15;color:var(--text);margin-bottom:1.3rem;letter-spacing:-0.02em;}
+    .hero-desc{font-size:1rem;color:var(--muted);line-height:1.8;max-width:480px;margin-bottom:2.2rem;}
+    .hero-btns{display:flex;gap:0.9rem;flex-wrap:wrap;}
+    .btn-pill{display:inline-block;padding:0.8rem 1.7rem;border-radius:50px;font-size:0.88rem;font-weight:600;text-decoration:none;transition:transform 0.18s,box-shadow 0.18s,background 0.18s;}
+    .btn-pill:hover{transform:translateY(-2px);}
+    .btn-blue{background:var(--accent);color:#fff;box-shadow:0 4px 14px rgba(58,110,165,0.28);}
+    .btn-blue:hover{background:var(--accent-dark);box-shadow:0 6px 20px rgba(58,110,165,0.38);}
+    .btn-teal{background:var(--teal);color:#fff;box-shadow:0 4px 14px rgba(42,138,138,0.28);}
+    .btn-teal:hover{background:#1f6e6e;box-shadow:0 6px 20px rgba(42,138,138,0.38);}
+    .btn-ghost{background:transparent;color:var(--accent);border:2px solid var(--accent);}
+    .btn-ghost:hover{background:var(--accent-light);}
+    /* Hero stats card */
+    .hero-right{position:relative;z-index:1;}
+    .stats-card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:1.8rem;box-shadow:0 16px 48px rgba(58,110,165,0.12);}
+    .stats-card-label{font-size:0.71rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--teal);margin-bottom:1.2rem;}
+    .stat-item{display:flex;align-items:center;gap:1rem;padding:0.85rem 1rem;background:var(--bg);border-radius:10px;border:1px solid var(--border);transition:transform 0.18s,box-shadow 0.18s;margin-bottom:0.8rem;}
+    .stat-item:last-child{margin-bottom:0;}
+    .stat-item:hover{transform:translateX(4px);box-shadow:0 4px 12px rgba(58,110,165,0.1);}
+    .stat-num{font-family:var(--serif);font-size:1.8rem;font-weight:600;color:var(--accent);min-width:60px;line-height:1;}
+    .stat-text strong{display:block;color:var(--text);font-weight:500;font-size:0.88rem;}
+    .stat-text span{font-size:0.78rem;color:var(--muted);}
+    /* FEATURES */
+    .features{padding:80px 6vw;background:#fff;border-top:1px solid var(--border);}
+    .features-inner{max-width:960px;margin:0 auto;}
+    .section-label{font-size:0.74rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent);margin-bottom:0.7rem;}
+    h2{font-family:var(--serif);font-weight:300;font-size:clamp(1.8rem,3.5vw,2.8rem);line-height:1.2;margin-bottom:0.9rem;}
+    .section-desc{color:var(--muted);max-width:600px;font-size:1rem;margin-bottom:2.8rem;}
+    .cards-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1.3rem;}
+    .card{background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:1.6rem;border-top:3px solid var(--accent);transition:box-shadow 0.2s,transform 0.2s;}
+    .card.t{border-top-color:var(--teal);}
+    .card.g{border-top-color:#b87c2e;}
+    .card.gr{border-top-color:#3a8a5a;}
+    .card:hover{box-shadow:0 8px 24px rgba(58,110,165,0.11);transform:translateY(-4px);}
+    .card-icon{font-size:1.5rem;margin-bottom:0.7rem;}
+    .card h3{font-family:var(--serif);font-size:1.1rem;font-weight:400;margin-bottom:0.4rem;}
+    .card p{font-size:0.83rem;color:var(--muted);margin:0;line-height:1.6;}
+    footer{text-align:center;padding:2rem;font-size:0.82rem;color:var(--muted);border-top:1px solid var(--border);background:var(--bg);}
+    @media(max-width:768px){.hero-inner{grid-template-columns:1fr;gap:2.5rem;}.hero-right{display:none;}.hero-btns{flex-direction:column;align-items:flex-start;}}
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-brand" href="index.html"><svg width="48" height="48" viewBox="0 0 680 680" xmlns="http://www.w3.org/2000/svg"><defs><clipPath id="cc"><circle cx="340" cy="340" r="145"/></clipPath></defs><circle cx="340" cy="340" r="168" fill="none" stroke="#3a6ea5" stroke-width="18"/><circle cx="340" cy="340" r="145" fill="#dbe8f5"/><circle cx="340" cy="172" r="28" fill="#3a6ea5"/><circle cx="340" cy="508" r="28" fill="#3a6ea5"/><circle cx="172" cy="340" r="28" fill="#3a6ea5"/><circle cx="508" cy="340" r="28" fill="#3a6ea5"/><circle cx="222" cy="222" r="28" fill="#3a6ea5"/><circle cx="458" cy="222" r="28" fill="#3a6ea5"/><circle cx="222" cy="458" r="28" fill="#3a6ea5"/><circle cx="458" cy="458" r="28" fill="#3a6ea5"/><g clip-path="url(#cc)"><line x1="195" y1="430" x2="485" y2="430" stroke="#3a6ea5" stroke-width="6"/><path d="M195 430 Q240 430 270 250 Q300 430 370 430" fill="#3a6ea5" fill-opacity="0.35" stroke="#3a6ea5" stroke-width="6"/><path d="M345 430 Q370 430 395 340 Q420 430 460 430" fill="#5b8fc4" fill-opacity="0.25" stroke="#5b8fc4" stroke-width="5"/></g></svg><span>PolyIC</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html" class="nav-plain active">Home</a></li>
+    <li class="">
+      <button class="nav-dd-btn"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>About</button>
+      <div class="dd-menu"><a href="about-overview.html">PolyIC Overview</a><a href="about-team.html">Team</a><a href="about-advisory.html">Advisory Board</a><a href="about-contact.html">Contact</a></div>
+    </li>
+    <li class="">
+      <button class="nav-dd-btn"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>Databases</button>
+      <div class="dd-menu"><a href="database-polycrit-v1.html">PolyCrit.V1</a><a href="database-polycrit-v2.html">PolyCrit.V2</a><a href="database-polyic.html">PolyIC</a></div>
+    </li>
+    <li class="">
+      <button class="nav-dd-btn"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>Applications</button>
+      <div class="dd-menu"><a href="applications-pharma.html">Pharma Polymers</a><a href="applications-polyolefins.html">Polyolefins</a></div>
+    </li>
+    <li class="">
+      <button class="nav-dd-btn"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>Tutorials</button>
+      <div class="dd-menu"><a href="tutorials-educational.html">Educational Content</a></div>
+    </li>
+    <li><a href="join.html" class="nav-plain">Join</a></li>
+  </ul>
+</nav>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-left">
+      <div class="hero-badge">Data-Driven Polymer Interaction Chromatography</div>
+      <h1 class="hero-title">Making polymer separations predictable and reproducible</h1>
+      <p class="hero-desc">PolyIC is an open platform to design, understand, and simulate polymer interaction chromatography (PIC). It brings together shared data, practical knowledge, and predictive tools to make PIC easier to use and easier to reproduce.</p>
+      <div class="hero-btns">
+        <a href="about-overview.html" class="btn-pill btn-blue">Explore PolyIC</a>
+        <a href="join.html" class="btn-pill btn-teal">Contribute</a>
+        <a href="applications-pharma.html" class="btn-pill btn-ghost">Applications</a>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="stats-card">
+        <div class="stats-card-label">Platform at a Glance</div>
+        <div class="stat-item">
+          <div class="stat-num">500+</div>
+          <div class="stat-text"><strong>Polymer Entries</strong><span>Curated IC records in PolyCrit</span></div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">80+</div>
+          <div class="stat-text"><strong>Publications</strong><span>Peer-reviewed sources</span></div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">20+</div>
+          <div class="stat-text"><strong>Years of Research</strong><span>Expertise in polymer chromatography</span></div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">12</div>
+          <div class="stat-text"><strong>Active Projects</strong><span>Ongoing research initiatives</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="features">
+  <div class="features-inner">
+    <div class="section-label">What PolyIC Offers</div>
+    <h2>Everything You Need for Polymer Research</h2>
+    <p class="section-desc">From raw experimental data to interactive tools and educational resources — all in one place.</p>
+    <div class="cards-grid">
+      <div class="card"><div class="card-icon">🗄️</div><h3>PolyCrit Database</h3><p>Searchable, quality-scored IC records covering critical conditions for hundreds of polymer systems.</p></div>
+      <div class="card t"><div class="card-icon">⚙️</div><h3>Research Tools</h3><p>Interactive calculators and planners to design and optimize your polymer separation experiments.</p></div>
+      <div class="card g"><div class="card-icon">🏭</div><h3>Applications</h3><p>Targeted methods for pharmaceutical polymers, polyolefins, and other industrially relevant systems.</p></div>
+      <div class="card gr"><div class="card-icon">🎓</div><h3>Education</h3><p>Video lectures, lab protocols, and reading lists for students and early-career polymer scientists.</p></div>
+    </div>
+  </div>
+</section>
+
+<footer>&copy; 2025 PolyIC — Dr. Yongmei Wang Polymer Research Project. All rights reserved.</footer>
+
+<script>
+(function(){
+  var items = document.querySelectorAll('.nav-links > li');
+  items.forEach(function(li){
+    var btn = li.querySelector('.nav-dd-btn');
+    if(!btn) return;
+    btn.addEventListener('click', function(e){
+      e.stopPropagation();
+      var wasOpen = li.classList.contains('open');
+      items.forEach(function(x){ x.classList.remove('open'); });
+      if(!wasOpen) li.classList.add('open');
+    });
+  });
+  document.addEventListener('click', function(){
+    items.forEach(function(x){ x.classList.remove('open'); });
+  });
+})();
+</script>
+</body>
+</html>
