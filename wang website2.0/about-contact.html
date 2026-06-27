@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Contact — PolyIC</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root { --bg:#f4f5f7; --bg-card:#fff; --text:#1a1f2e; --muted:#6b7280; --accent:#3a6ea5; --accent-light:#dbe8f5; --border:#e2e6ec; --serif:'Cormorant Garamond',Georgia,serif; --sans:'DM Sans',sans-serif; }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html{scroll-behavior:smooth;}
+    body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:16px;line-height:1.7;}
+    nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(244,245,247,0.97);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 6vw;height:68px;}
+    .nav-brand{display:flex;align-items:center;gap:0.6rem;text-decoration:none;}
+    .nav-links{display:flex;gap:0.15rem;list-style:none;align-items:center;}
+    .nav-links>li{position:relative;}
+    .nav-links>li>a.nav-plain{display:block;padding:0.5rem 1rem;font-size:0.83rem;font-weight:500;color:var(--muted);text-decoration:none;letter-spacing:0.06em;text-transform:uppercase;border-radius:4px;transition:color 0.2s,background 0.2s;}
+    .nav-links>li>a.nav-plain:hover,.nav-links>li>a.nav-plain.active{color:var(--accent);background:var(--accent-light);}
+    .nav-dd-btn{display:flex;align-items:center;gap:0.4rem;padding:0.5rem 1rem;font-size:0.83rem;font-weight:500;color:var(--muted);letter-spacing:0.06em;text-transform:uppercase;border-radius:4px;cursor:pointer;user-select:none;background:none;border:none;transition:color 0.2s,background 0.2s;white-space:nowrap;}
+    .nav-dd-btn:hover,.nav-links>li.open .nav-dd-btn,.nav-links>li.active-section .nav-dd-btn{color:var(--accent);background:var(--accent-light);}
+    .nav-dd-btn svg{width:12px;height:12px;flex-shrink:0;transition:transform 0.22s;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;}
+    .nav-links>li.open .nav-dd-btn svg{transform:rotate(180deg);}
+    .dd-menu{display:none;position:absolute;top:calc(100% + 6px);left:0;min-width:210px;background:var(--bg-card);border:1px solid var(--border);border-radius:10px;box-shadow:0 12px 32px rgba(0,0,0,0.13);overflow:hidden;z-index:200;}
+    .nav-links>li.open .dd-menu{display:block;}
+    .dd-menu a{display:flex;align-items:center;padding:0.8rem 1.3rem;font-size:0.86rem;font-weight:500;color:var(--text);text-decoration:none;transition:background 0.15s,color 0.15s;border-left:3px solid transparent;}
+    .dd-menu a:hover{background:var(--accent-light);color:var(--accent);border-left-color:var(--accent);}
+    .dd-menu a:not(:last-child){border-bottom:1px solid var(--border);}
+    .page-content{max-width:960px;margin:0 auto;padding:108px 6vw 80px;}
+    .section-label{font-size:0.75rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent);margin-bottom:1rem;}
+    h1,h2{font-family:var(--serif);font-weight:300;line-height:1.2;}
+    h1{font-size:clamp(2.2rem,5vw,4rem);margin-bottom:1.2rem;}
+    h2{font-size:clamp(1.4rem,3vw,2.2rem);margin-bottom:1rem;margin-top:2.5rem;}
+    h3{font-family:var(--serif);font-weight:400;font-size:1.15rem;margin-bottom:0.5rem;color:var(--text);}
+    p{color:var(--muted);max-width:680px;margin-bottom:1.2rem;}
+    .cards-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.2rem;margin-top:1.5rem;}
+    .card{background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:1.5rem;box-shadow:0 1px 4px rgba(0,0,0,0.04);transition:box-shadow 0.2s,transform 0.2s;}
+    .card:hover{box-shadow:0 6px 20px rgba(58,110,165,0.12);transform:translateY(-3px);}
+    .card-icon{font-size:1.4rem;margin-bottom:0.75rem;}
+    .card h3{font-size:1rem;}
+    .card p{font-size:0.83rem;margin:0;}
+    .tag-list{display:flex;flex-wrap:wrap;gap:0.5rem;margin-top:1.5rem;}
+    .tag{background:var(--accent-light);color:var(--accent);font-size:0.78rem;padding:0.35rem 0.85rem;border-radius:100px;font-weight:500;}
+    .divider{border:none;border-top:1px solid var(--border);margin:2.5rem 0;}
+    footer{text-align:center;padding:2rem;font-size:0.82rem;color:var(--muted);border-top:1px solid var(--border);background:var(--bg);margin-top:4rem;}
+    @media(max-width:768px){nav{padding:0 4vw;height:60px;}.nav-links{gap:0;}.nav-dd-btn,.nav-links>li>a.nav-plain{padding:0.45rem 0.7rem;font-size:0.78rem;}}
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-brand" href="index.html"><img src="data:image/jpeg;base64,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" alt="PolyIC" style="height:48px;width:auto;display:block;"/></a>
+  <ul class="nav-links">
+    <li><a href="index.html" class="nav-plain">Home</a></li>
+    <li class="active-section">
+      <button class="nav-dd-btn"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>About</button>
+      <div class="dd-menu"><a href="about-overview.html">PolyIC Overview</a><a href="about-team.html">Team</a><a href="about-advisory.html">Advisory Board</a><a href="about-contact.html">Contact</a></div>
+    </li>
+    <li class="">
+      <button class="nav-dd-btn"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>Databases</button>
+      <div class="dd-menu"><a href="database-polycrit-v1.html">PolyCrit.V1</a><a href="database-polycrit-v2.html">PolyCrit.V2</a><a href="database-polyic.html">PolyIC</a></div>
+    </li>
+    <li class="">
+      <button class="nav-dd-btn"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>Applications</button>
+      <div class="dd-menu"><a href="applications-pharma.html">Pharma Polymers</a><a href="applications-polyolefins.html">Polyolefins</a></div>
+    </li>
+    <li class="">
+      <button class="nav-dd-btn"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>Tutorials</button>
+      <div class="dd-menu"><a href="tutorials-educational.html">Educational Content</a></div>
+    </li>
+    <li><a href="join.html" class="nav-plain">Join</a></li>
+  </ul>
+</nav>
+
+<div class="page-content">
+  <div class="section-label">About</div>
+  <h1>Contact Us</h1>
+  
+<p>We welcome inquiries from researchers, students, and industry professionals interested in collaborating with the PolyIC project, contributing data, or learning more about our work.</p>
+<hr class="divider"/>
+<h2>Get in Touch</h2>
+<div class="cards-grid">
+  <div class="card"><div class="card-icon">📧</div><h3>General Inquiries</h3><p>For questions about the PolyIC platform, database access, or research collaborations.</p></div>
+  <div class="card"><div class="card-icon">📤</div><h3>Data Submission</h3><p>Interested in contributing experimental records to the PolyCrit database? Contact us to learn about our submission process.</p></div>
+  <div class="card"><div class="card-icon">🎓</div><h3>Prospective Students</h3><p>Graduate and postdoctoral positions are available. Send your CV and research interests to Dr. Wang directly.</p></div>
+</div>
+<hr class="divider"/>
+<h2>Location</h2>
+<p>Department of Chemistry<br/>University of Memphis · Memphis, TN 38152</p>
+<p>Email: <a href="mailto:ywang@memphis.edu" style="color:var(--accent);">ywang@memphis.edu</a></p>
+
+</div>
+<footer>&copy; 2025 PolyIC — Dr. Yongmei Wang Polymer Research Project. All rights reserved.</footer>
+
+<script>
+(function(){
+  var items = document.querySelectorAll('.nav-links > li');
+  items.forEach(function(li){
+    var btn = li.querySelector('.nav-dd-btn');
+    if(!btn) return;
+    btn.addEventListener('click', function(e){
+      e.stopPropagation();
+      var wasOpen = li.classList.contains('open');
+      items.forEach(function(x){ x.classList.remove('open'); });
+      if(!wasOpen) li.classList.add('open');
+    });
+  });
+  document.addEventListener('click', function(){
+    items.forEach(function(x){ x.classList.remove('open'); });
+  });
+})();
+</script>
+
+</body>
+</html>
